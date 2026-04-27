@@ -1,51 +1,68 @@
 # posture-monitor
 
-PC カメラを使って猫背を検知し、警告を出すアプリを目指すプロジェクトです。
+PC カメラを使って姿勢をセンシングし、猫背を検知して警告を出すことを目的とした Python プロジェクトです。
 
-まず第一段階として、MediaPipe を使った手（指）センシングを公開しています。
+このリポジトリでは、段階的に機能を公開しています。
 
-## Current Status
+## What This Project Does
 
-- Phase 1: 手・指トラッキング（公開対象）
-        - ファイル: `finger_sensing.py`
-        - 内容: Web カメラ映像から手のランドマークを検出して描画
-- Phase 2: 猫背検知 + 警告（公開）
-        - ファイル: `nekoze.py`
-        - 備考: 実験段階（しきい値は今後調整予定）
+1. 手・指トラッキング
+- スクリプト: `finger_sensing.py`
+- MediaPipe Hands で手のランドマークをリアルタイム描画
 
-## Demo (Phase 1)
+2. 猫背検知 + 警告
+- スクリプト: `nekoze.py`
+- 顔と肩の位置関係から姿勢を判定し、状態を表示
+- 条件に応じて警告音を再生
 
-`finger_sensing.py` でできること:
+## Requirements
 
-- 手のランドマークをリアルタイム表示
-- 両手（最大 2 手）を同時に追跡
-- `q` キーで終了
+- Python 3.10 以上
+- Web カメラ
 
 ## Setup
-
-1. Python 3.10+ をインストール
-2. 依存関係をインストール
 
 ```bash
 pip install -r requirements.txt
 ```
 
-## Run
+## Usage
+
+### 1) Finger Sensing
 
 ```bash
 python finger_sensing.py
 ```
 
+- 終了キー: `q`
+
+### 2) Posture Detection
+
 ```bash
 python nekoze.py
 ```
 
-## Next Goal
+- 終了キー: `q`
+- 警告音は `nekoze.py` と同じフォルダに `be.mp3` がある場合に再生
 
-次のステップでは、姿勢スコアの安定化と警告ロジックの改善を行い、
-「猫背検知 + 通知」までを実装する予定です。
+## Project Status
 
-## Notes
+- v0.1: 手・指トラッキングの公開
+- v0.2: 猫背検知 + 警告機能の公開
 
-- カメラデバイスが見つからない場合は、`cv2.VideoCapture(0)` の番号を調整してください。
-- `nekoze.py` の警告音は同じフォルダに `be.mp3` がある場合のみ再生されます。
+## Known Limitations
+
+- 姿勢判定しきい値は環境により調整が必要
+- カメラの角度や座る位置で判定が変わる
+- 現在はシンプルな判定ロジックで実験中
+
+## Roadmap
+
+- 判定ロジックの安定化
+- 個人差に合わせたキャリブレーション
+- 通知方式の改善（音以外の通知など）
+
+## Troubleshooting
+
+- カメラが起動しない場合: `cv2.VideoCapture(0)` の番号を `1` などに変更
+- 警告音が鳴らない場合: `be.mp3` の配置と音量設定を確認
